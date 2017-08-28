@@ -1,2 +1,2 @@
 # MilsMessage
-Prototype of a translation module between MILS and DLMS formats
+<b>Prototype</b> of a translation module between MILS and DLMS formats
