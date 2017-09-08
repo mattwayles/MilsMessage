@@ -37,8 +37,8 @@ class TestMilsInteractiveParser {
     message = "ZZZ?)H6N0;LA,2|4TUA-1Q}6$1X{$U+({/NU,&3[M BW8.9W@ZC4IU{ 7V 5M-KF,&7:&D<816WLRO&M";
     userInput = "Type" + System.getProperty("line.separator") + "6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     expectedOut = "Which message field would you like to retrieve?\n" +
       "  Type\n" +
       "  This\n" +
@@ -69,8 +69,8 @@ class TestMilsInteractiveParser {
     userInput = "Invalid\nName"
       + System.getProperty("line.separator") + "6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] { "/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedErr = "That message field was not recognized. Please try again.\n";
     assertEquals(expectedErr, actualErr.toString());
   }
@@ -79,8 +79,8 @@ class TestMilsInteractiveParser {
     message = "6.UBS5W$]1< X%}6FZ;_=.(R-@V&}G+I22[&/;>3E>%^LE-%]#DN9}Z4>1,84=DL*}4OG0QJ9^6]VER|";
     userInput = "6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file,message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file,message);
+    parser.parse();
     expectedErr = "No matching definition for the provided message.\n";
     assertEquals(expectedErr, actualErr.toString());
   }
@@ -89,8 +89,8 @@ class TestMilsInteractiveParser {
     message = "A0A@ HE+W:T UO[5{G1GIUK}BG_LNB{F 6{?HY6#GXGT8=8.'B2FPWP*^W0KIWU;],?R7_Q1{)8+G$KK";
     userInput = "Name\n1\n/Invalid/Path/Name\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     expectedOut = "Which message field would you like to retrieve?\n" +
       "  Type\n" +
       "  Name\n" +
@@ -130,8 +130,8 @@ class TestMilsInteractiveParser {
     message = "A0'1O3MC%3?; XK=_]_MCX%_HY/XH;1ESQPGLA|@3}PWYP$1${G&^D7##NP}4/ S[V9XJ]1KPRU+3M'F";
     userInput = "Serial\n1\n/home/matt/Desktop/fakeTest\n6\n6\n7";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     expectedOut = "Which message field would you like to retrieve?\n" +
       "  Type\n" +
       "  Company\n" +
@@ -171,8 +171,8 @@ class TestMilsInteractiveParser {
     message = "A>5='Y7:*WH5 _.GQ'70S)|AD_1)7P(_&T_ @ZY#UH^CR09?DZSIYLPRY<_O^56DB}49/1EMYR 22>^+";
     userInput = "DODAC\n1\n/format\nType\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     expectedOut = "Which message field would you like to retrieve?\n" +
       "  Type\n" +
       "  Location\n" +
@@ -224,8 +224,8 @@ class TestMilsInteractiveParser {
     message = "B0B  )69.%>>PD?()6;OG7E'G (2G{ M[N}:(P9WU(P_D7H8({X%16JO_O]>*XVW(CF?@@&W;,OUXS1X";
     userInput = "Flag\n2\nATHISISAFAKEMILSMESSAGE\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -266,8 +266,8 @@ class TestMilsInteractiveParser {
     message = "B/K^@PUK5];L}-4IX,6,9G4.I;M3BQ@VD:^[*&IQ#8&P08Z+'_PH8] -R)R18P*MV@_E) H_CD6A-8<L";
     userInput = "Inventory\n2\n&9@DCQPZA4'%[VI, W<JL846AKMZ2.-(,2[7F+./579B4EINY=/[+682F>^H<'B2=]9)40E{EDY@O{;8\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -309,8 +309,8 @@ class TestMilsInteractiveParser {
     message = "C,*6=^>I< R(/^E,QV%P8-^CQ${F|{;4NKEFZ?HO*EQ6.H?70HAW0^,W/D#A#[V,$@S[PHKLW>}(}_0Q";
     userInput = "Company\n2\nZZZ@DCQPZA4'%[VI, W<JL846AKMZ2.-(,2[7F+./579B4EINY=/[+682F>^H<'B2=]9)40E{EDY@O{8\nValue\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -364,8 +364,8 @@ class TestMilsInteractiveParser {
     message = "C4K=:R}N<U|CQTB0[5$@6DC/D5;;7@R+(4Y0D6GAX+U2|O_M[3N'#D<CC;>,^:)-LY^NR 2&7EY/K;N,";
     userInput = "DODAC\n3\nInventory\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -418,8 +418,8 @@ class TestMilsInteractiveParser {
     message = "CIC+:O}$&@|.VDZ<58[O47W$FJ.1J<Q|*,@>G/H-,8:Y<J?<:J.>'[]ZE5A/7XLY0>@%{^N#>I)XP6Z5";
     userInput = "Company\n4\nINV\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -458,8 +458,8 @@ class TestMilsInteractiveParser {
     message = "CIX:@,#Z>OL^B(|SCP_C_M6B^*5?.<X_].*U8$#O*7?N.T,AEC@:GJ|WVUPV<3EH<M>30SRWF-Z ;^RT";
     userInput = "Inventory\n4\nD9D\nSERIALSERI\nDODACDODAC\nFLAGFLAGFL\nNAMENAMENA\nINVENTORY0\nCOMPANY\nLOCATION00\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -509,8 +509,8 @@ class TestMilsInteractiveParser {
     message = "C4X2DUMWC }=BUC*]*J}[58T8DKW:&={L'B.AB]IOB?JVUT#I^1:23CX9U=L#^:NCX3#+N*{'{$9L9@#";
     userInput = "Flag\n5\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +
@@ -553,8 +553,8 @@ class TestMilsInteractiveParser {
     message = "C4X2DUMWC }=BUC*]*J}[58T8DKW:&={L'B.AB]IOB?JVUT#I^1:23CX9U=L#^:NCX3#+N*{'{$9L9@#";
     userInput = "Flag\n5\n9\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    parser.parse(new String[] {"/parse", file, message});
+    MilsInteractiveParser parser = new MilsInteractiveParser(file, message);
+    parser.parse();
     String expectedOut =
       "Which message field would you like to retrieve?\n" +
         "  Type\n" +

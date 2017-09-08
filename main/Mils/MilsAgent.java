@@ -1,5 +1,6 @@
 package Mils;
 
+import java.io.File;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,6 +14,11 @@ import java.util.regex.Pattern;
  * Last Edited: 08/25/2017
  */
 class MilsAgent {
+  private String formatFile;
+  private File outputFile;
+  private String inputValue;
+  private int[] messagesParsed;
+  final static int MESSAGE_LENGTH = 80;
 
   /**
    * Method that scans the provided format file for definitions matching the provided message type. Optimized to select
@@ -87,12 +93,11 @@ class MilsAgent {
 
   /**
    * Create a string from a built MILS message character array, while preserving whitespace
-   * @param milsInt The MILS Interactive Builder object constructing the message
    * @param milsMsgObj The object containing the message fields and value indices
    * @return A string representation of the MILS Message character array
    */
-  String buildMilsMsgString(MilsInteractiveBuilder milsInt, MilsMsg milsMsgObj) {
-    char[] milsMsg = buildMilsMsg(milsInt, milsMsgObj);
+  String buildMilsMsgString(MilsMsg milsMsgObj) {
+    char[] milsMsg = buildMilsMsg(milsMsgObj);
     StringBuilder milsMsgStr = new StringBuilder();
     for (char c : milsMsg) {
       if (c == 0) {
@@ -106,17 +111,16 @@ class MilsAgent {
   /**
    * Build a MILS message by inserting MILSMsg Object HashMap values into a character array at specified
    * indices.
-   * @param milsInt The MILS Interactive Builder object constructing the message
    * @param milsMsgObj The object containing the message fields and value indices
    * @return  The MILS Message character array
    */
-  private char[] buildMilsMsg(MilsInteractiveBuilder milsInt, MilsMsg milsMsgObj) {
+  private char[] buildMilsMsg(MilsMsg milsMsgObj) {
     int i;
     int[] indices;
     char[] currentField;
     char[] milsMsgChar;
 
-    milsMsgChar = new char[80];
+    milsMsgChar = new char[MESSAGE_LENGTH];
 
     for (String field : milsMsgObj.getData().keySet()) {
       if (field.equals("Type")) {
@@ -127,7 +131,7 @@ class MilsAgent {
       } else {
         indices = getIndices(milsMsgObj.get(field));
         if (indices.length != 1) {
-          milsMsgObj.add(field, milsInt.getMessageFieldInput(field, (indices[1] - indices[0]) + 1));
+          milsMsgObj.add(field, getMessageFieldInput(field, (indices[1] - indices[0]) + 1));
 
         }
         currentField = milsMsgObj.get(field).toCharArray();
@@ -155,4 +159,38 @@ class MilsAgent {
     }
     return intArr;
   }
+
+  String getFormatFile() { return formatFile; }
+
+  void setFormatFile(String ff) { formatFile = ff; }
+
+  /**
+   * Accessor method to retrieve the user-supplied input value
+   * @return  The user-supplied input value (either a MILS message or a file)
+   */
+  String getInputValue() {
+    return inputValue;
+  }
+
+  /**
+   * Accessor method to capture the user-supplied input value
+   * @param iv  The user-supplied input value
+   */
+  void setInputValue(String iv) { inputValue = iv; }
+
+  /**
+   * Accessor method to retrieve the user-supplie output file, if it exists
+   * @return The user-supplied output file
+   */
+  File getOutputFile() { return outputFile; }
+
+  /**
+   * Accessor method to capture the user-supplied output value, if it exists
+   * @param op The user-supplied output file
+   */
+  void setOutputFile(File op) { outputFile = op; }
+
+  void setMessagesParsed(int[] mp) { messagesParsed = mp; }
+
+  int[] getMessagesParsed() { return messagesParsed; }
 }
