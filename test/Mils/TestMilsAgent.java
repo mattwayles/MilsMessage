@@ -43,7 +43,7 @@ class TestMilsAgent {
   @Test
   void scanMostSpecificExample() {
     message = "Y2KT4-/]M|YJK 3\\+[A@/]<@:^8&$$]6L8)+>FS88|BR\\0JN|FI^^}MP=R[4R4+3[2F3)XDNN,,1$1*3";
-    expected = "Y2K, (25, 30, Company), (42, 44, Flag), (48, 60, Location), (61, 63, Serial), (68, 71, DODAC), (74, 76, Name), (78, 79, Company)";
+    expected = "Y2K, (25, 30, Inventory), (42, 44, Flag), (48, 60, Location), (61, 63, Serial), (68, 71, DODAC), (74, 76, Name), (78, 79, Company)";
     actual = agent.scan(file, message);
     assertEquals(expected, actual);
   }
@@ -129,62 +129,6 @@ class TestMilsAgent {
   }
 
   /**
-   * ThirdParamExists Tests - Called during a parse operation, this method checks to see if a third parameter was input
-   * by the user. This parameter identifies a specific field to extract the value for. If the parameter exists, display
-   * the value to the user immediately and present options to move forward. The method is only called after all parameters
-   * have been validated, and the extracted message definition is proven non-null. The method has a couple of conditions,
-   * tested through the following tests:
-   *   Third parameter exists with a valid, non-empty value
-   *   Third parameter exists but is an empty string
-   *   Third parameter exists, but is not a valid field present in the object's hash map
-   *   Third parameter does not exist
-   */
-  @Test
-  void thirdParamExistsAndNotEmpty() {
-    message = "BHVKYU{C4V]IN8=_7M>X+7LE_61M%^ *LTZO|I*_[210NXK3[>>OPQ/F?+99DD^'32/L>? 4M=*O%/+-";
-    String[] params = new String[] {"/parse", file, message, "Company"};
-
-    expected = "LTZO|I*_[210NXK3[>>OPQ/F?\n";
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    MilsMsg actualObj = agent.populateMilsMsg(message, agent.scan(file, message));
-    Boolean actual = parser.thirdParamExists(params, actualObj);
-    assertEquals(expected, outContent.toString());
-    assertTrue(actual);
-  }
-  @Test
-  void thirdParamExistsButIsEmpty() {
-    message = "BHVKYU{C4V]IN8=_7M>X+7LE_61M%^ *LTZO|I*_[210NXK3[>>OPQ/F?+99DD^'32/L>? 4M=*O%/+-";
-    String[] params = new String[] {"/parse", file, message, ""};
-
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    MilsMsg actualObj = agent.populateMilsMsg(message, agent.scan(file, message));
-    Boolean actual = parser.thirdParamExists(params, actualObj);
-    assertFalse(actual);
-  }
-  @Test
-  void thirdParamExistsButIsntValidField() {
-    message = "BHVKYU{C4V]IN8=_7M>X+7LE_61M%^ *LTZO|I*_[210NXK3[>>OPQ/F?+99DD^'32/L>? 4M=*O%/+-";
-    String[] params = new String[] {"/parse", file, message, "InvalidField"};
-
-    expected = "That message field does not exist in this message definition.\n";
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    MilsMsg actualObj = agent.populateMilsMsg(message, agent.scan(file, message));
-    Boolean actual = parser.thirdParamExists(params, actualObj);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void thirdParamDNE() {
-    message = "BHVKYU{C4V]IN8=_7M>X+7LE_61M%^ *LTZO|I*_[210NXK3[>>OPQ/F?+99DD^'32/L>? 4M=*O%/+-";
-    String[] params = new String[] {"/parse", file, message};
-
-    MilsInteractiveParser parser = new MilsInteractiveParser();
-    MilsMsg actualObj = agent.populateMilsMsg(message, agent.scan(file, message));
-    Boolean actual = parser.thirdParamExists(params, actualObj);
-    assertFalse(actual);
-  }
-
-  /**
    * BuildMilsMsgString Test - Takes a created MilsMsg object and gathers user input to construct a new MILS message.
    * Error-checking is done within the method, and loops until correct data is input. Therefore, the only test to run is:
    *   -Building valid MILS message from valid user input
@@ -197,97 +141,8 @@ class TestMilsAgent {
     MilsMsg actualObj = agent.populateMilsMsg(message, agent.scan(file, message));
     expected = "D1LOCATIONLOCATI   INVCOMPAN           DOD        N    SERIAL       FLAGFLAGFLA ";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder milsInt = new MilsInteractiveBuilder();
-    String actual = agent.buildMilsMsgString(milsInt, actualObj);
+    MilsInteractiveBuilder milsInt = new MilsInteractiveBuilder(file, message);
+    String actual = agent.buildMilsMsgString(actualObj);
     assertEquals(expected, actual);
   }
-
-  /**
-   * AreParamsValid Tests - This method runs before anything else to determine if the user-supplied parameters for
-   * execution are valid. The first parameter must be eith /parse or /build. The second parameter must be a valid
-   * file that exists on the system. The third parameter must be a valid 80-character MILS message. The fourth
-   * parameter is optional and must be the name of a message field to be retrieved. There are three errors that present
-   * if the parameters are incorrect, leading to the requirement of the following tests:
-   *   - Four parameters, all valid
-   *   - Four parameters, invalid message
-   *   - Four parameters, invalid file
-   *   - Three parameters, all valid
-   *   - Three parameters, null message
-   *   - Three parameters, null file
-   *   - Two parameters (invalid)
-   *   - Five parameters (invalid)
-
-  @Test
-  void areParamsValidFourParamsValidFileValidMessage() {
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@6PE/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    String[] params = new String[] {"/parse", file, message, "Random"};
-    assertTrue(agent.areParamsValid(params));
-  }
-  @Test
-  void areParamsValidFourParamsValidFileInvalidMessage() {
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@E/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    String[] params = new String[] {"/parse", file, message, "Random"};
-    expected = "Invalid Parameter: The provided MILS Message is Invalid.\n";
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void areParamsValidFourParamsInvalidFileValidMessage() {
-    file = "/home/dksdklsfjkl";
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@EDC/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    String[] params = new String[] {"/parse", file, message, "Random"};
-    expected = "Invalid Parameter: No format definitions could be found in " + params[1] + ".\n";
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void areParamsValidThreeValidParams() {
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@EDC/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    String[] params = new String[] {"/parse", file, message};
-    assertTrue(agent.areParamsValid(params));
-  }
-  @Test
-  void areParamsValidThreeParamsNullFile() {
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@EDC/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    expected = "You have provided the wrong number of arguments.\n" +
-      "Correct syntax is 'java main.Mils </parse|/build>" +
-      " <format file> <MILSMsg|MILSType> [message field]'\n";
-    String[] params = new String[] {"/parse", null, message};
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void areParamsValidThreeParamsNullMessage() {
-    expected = "You have provided the wrong number of arguments.\n" +
-      "Correct syntax is 'java main.Mils </parse|/build>" +
-      " <format file> <MILSMsg|MILSType> [message field]'\n";
-    String[] params = new String[] {"/parse", file, null};
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void areParamsValidTTwoParams() {
-    expected = "You have provided the wrong number of arguments.\n" +
-      "Correct syntax is 'java main.Mils </parse|/build>" +
-      " <format file> <MILSMsg|MILSType> [message field]'\n";
-    String[] params = new String[] {"/parse", file};
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  }
-  @Test
-  void areParamsValidFiveParams() {
-    message = ">9('H# P,F]?K:;VXYI$FYPCO@EDC/#X^-+'N]249C<.4U571]]SFD,ULD_1$XM;(84-8|^}7L2^UDHD";
-    expected = "You have provided the wrong number of arguments.\n" +
-      "Correct syntax is 'java main.Mils </parse|/build>" +
-      " <format file> <MILSMsg|MILSType> [message field]'\n";
-    String[] params = new String[] {"/parse", file, message, "Random", "Invalid Paramter"};
-    Boolean actual = agent.areParamsValid(params);
-    assertEquals(expected, errContent.toString());
-    assertFalse(actual);
-  } */
 }

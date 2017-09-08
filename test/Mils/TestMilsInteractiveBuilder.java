@@ -37,8 +37,8 @@ public class TestMilsInteractiveBuilder {
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n4";
 
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -66,8 +66,8 @@ public class TestMilsInteractiveBuilder {
     message = "A0A";
     userInput = "NAME00\nFLA\nSERIAL\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -96,8 +96,8 @@ public class TestMilsInteractiveBuilder {
     message = "IDK";
     userInput = "4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     expectedOut =
       "\n" +
       "[1] Build New MILS Message\n" +
@@ -115,8 +115,8 @@ public class TestMilsInteractiveBuilder {
     message = "A0A";
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n1\nJK\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -154,8 +154,8 @@ public class TestMilsInteractiveBuilder {
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n1\nY\n" +
       "NA\nSE\nLO\nIN\nFL\nDO\nCO\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -202,8 +202,8 @@ public class TestMilsInteractiveBuilder {
     message = "A0A";
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n2\nINVALIDMSG\n6";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -244,8 +244,8 @@ public class TestMilsInteractiveBuilder {
       "D1? WV]W-%0) C(BI{\\&{P5MST+|*|Q61BEK(R@ \\=:AB=PSYO|\\=Q32>EN|T+J?WM&\\IA>Z}@%<(\\.U\nCompany\n6";
 
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -297,8 +297,8 @@ public class TestMilsInteractiveBuilder {
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n3\nCompany\n6";
 
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
@@ -348,8 +348,8 @@ public class TestMilsInteractiveBuilder {
     message = "A0A";
     userInput = "NAME00\nFLA\nSER\nINV\nDODACDODACDODACDODA\nLOCATIONLOCATIO\nCOMPANY00\n8\n4";
     System.setIn(new ByteArrayInputStream(userInput.getBytes()));
-    MilsInteractiveBuilder builder = new MilsInteractiveBuilder();
-    builder.build(new String[] {"/build", file, message});
+    MilsInteractiveBuilder builder = new MilsInteractiveBuilder(file, message);
+    builder.build();
     String expectedOut =
       "Enter 6-character value for Name:  " +
         "Enter 3-character value for Flag:  " +
